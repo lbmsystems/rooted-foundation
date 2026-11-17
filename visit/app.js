@@ -31,10 +31,32 @@
     tourExpect: document.getElementById("tour-expect")
   };
 
+  // Must match the Location options in Airtable (Leads and Tour Slots).
+  var LOCS = {
+    "RootEd School House (5700 Colfax)": { name: "the RootEd School House", place: "RootEd School House, 5700 Colfax Ave, Alexandria, VA", address: "5700 Colfax Ave, Alexandria, VA", short: "schoolhouse" },
+    "Microschool & Project Center (4700 King)": { name: "the Root to Rise Microschool & Project Center", place: "Root to Rise Microschool & Project Center, 4700 King St, Alexandria, VA", address: "4700 King St, Alexandria, VA", short: "microschool" }
+  };
+  var locSel = form.elements.location;
+  var locUnsure = document.getElementById("loc-unsure");
+  var locLegend = document.getElementById("location-legend");
+
   var params = new URLSearchParams(location.search);
   var mode = params.has("info") ? "info" : "visit";
   var slots = [];
+  var slotsLoaded = false;
+
+  // Slots tagged with a school show only for that school; untagged slots show for either.
+  function visibleSlots() {
+    var loc = locSel.value;
+    return slots.filter(function (s) { return !s.location || s.location === loc; });
+  }
   var selectedDay = null;
+
+  // ?location=schoolhouse or ?location=microschool preselects (handy for links from each school's domain).
+  (function preselect() {
+    var want = (params.get("location") || "").toLowerCase();
+    Object.keys(LOCS).forEach(function (k) { if (LOCS[k].short === want) locSel.value = k; });
+  })();
 
   // ---------- Copy per mode ----------
   var COPY = {
@@ -44,8 +66,9 @@
       submit: "Book my visit",
       switchLead: "Not ready to visit?",
       toggle: "Get info first",
-      introTitle: "Come see where<br />little roots grow.",
-      introLede: "The best way to know if Root to Rise is right for your family is to visit. Bring your little one, meet our staff, and spend some time in the space. Tours take about 30 minutes."
+      introTitle: "Come see where<br />roots grow.",
+      introLede: "RootEd Foundation runs two schools in Alexandria: the RootEd School House on Colfax Ave for birth to 12, and the Root to Rise Microschool & Project Center on King St for ages 12 and up. The best way to know if one is right for your family is to visit. Tours take about 30 minutes.",
+      locLegend: "Which location would you like to visit?"
     },
     info: {
       title: "Get more info",
@@ -54,7 +77,8 @@
       switchLead: "Ready to see the space?",
       toggle: "Schedule a visit instead",
       introTitle: "Let's get to know<br />each other.",
-      introLede: "Not quite ready to visit? That's okay. Tell us a bit about your family and we'll follow up personally with tuition, schedules, and what a day at Root to Rise looks like."
+      introLede: "Not quite ready to visit? That's okay. Tell us a bit about your family and we'll follow up personally with tuition, schedules, and what a day looks like at RootEd.",
+      locLegend: "Which location are you interested in?"
     }
   };
 
@@ -69,7 +93,12 @@
     els.introLede.textContent = c.introLede;
     els.slotFieldset.hidden = mode !== "visit";
     els.tourExpect.hidden = mode !== "visit";
-    document.title = mode === "visit" ? "Visit Root to Rise Microschool" : "Get Info · Root to Rise Microschool";
+    locLegend.textContent = c.locLegend;
+    // Tours happen at one school, so "Not sure yet" is only offered when asking for info.
+    locUnsure.hidden = locUnsure.disabled = mode === "visit";
+    if (mode === "visit" && locSel.value === "Not sure yet") locSel.value = "";
+    if (mode === "visit") renderDays();
+    document.title = mode === "visit" ? "Visit RootEd Foundation" : "Get Info · RootEd Foundation";
     var p = new URLSearchParams(location.search);
     p.delete("info");
     var rest = p.toString();
@@ -105,11 +134,11 @@
     sel.appendChild(flex);
   })();
 
-  // Birthday: no future dates, back ~6 years.
+  // Birthday: no future dates, back ~18 years (School House is birth to 12, Microschool 12 and up).
   (function bdayLimits() {
     var b = form.elements.childBirthday;
     var max = new Date();
-    var min = new Date(); min.setFullYear(min.getFullYear() - 6);
+    var min = new Date(); min.setFullYear(min.getFullYear() - 19);
     b.max = max.toISOString().slice(0, 10);
     b.min = min.toISOString().slice(0, 10);
   })();
@@ -146,6 +175,7 @@
         });
     p.then(function (data) {
       slots = (data.slots || []).sort(function (a, b) { return a.start < b.start ? -1 : 1; });
+      slotsLoaded = true;
       renderDays();
     }).catch(function (err) {
       console.error("[r2r] could not load tour times:", err);
@@ -158,17 +188,24 @@
   }
 
   function renderDays() {
+    if (!slotsLoaded) return;
     els.days.innerHTML = "";
     els.times.innerHTML = "";
     form.elements.slotId.value = "";
-    if (!slots.length) {
+    if (!LOCS[locSel.value]) {
+      els.slotStatus.textContent = "Choose a location above to see tour times.";
+      updateArrows();
+      return;
+    }
+    var list = visibleSlots();
+    if (!list.length) {
       els.slotStatus.innerHTML = "There are no open tour times right now. <button type=\"button\" class=\"link-btn\" id=\"fallback-info\">Request info</button> and we'll reach out with new dates.";
       var fb = document.getElementById("fallback-info");
       if (fb) fb.addEventListener("click", function () { mode = "info"; applyMode(); });
       return;
     }
     var seen = {};
-    slots.forEach(function (s) {
+    list.forEach(function (s) {
       var k = dayKey(s.start);
       if (seen[k]) return;
       seen[k] = true;
@@ -198,7 +235,7 @@
     });
     els.times.innerHTML = "";
     form.elements.slotId.value = "";
-    slots.filter(function (s) { return dayKey(s.start) === k; }).forEach(function (s) {
+    visibleSlots().filter(function (s) { return dayKey(s.start) === k; }).forEach(function (s) {
       var b = document.createElement("button");
       b.type = "button";
       b.className = "time-btn";
@@ -216,6 +253,11 @@
       els.times.appendChild(b);
     });
   }
+
+  locSel.addEventListener("change", function () {
+    locSel.classList.remove("invalid");
+    if (mode === "visit") renderDays();
+  });
 
   // ---------- Date row arrows ----------
   function updateArrows() {
@@ -251,6 +293,9 @@
       el.classList.toggle("invalid", !ok);
       if (!ok) bad.push(el);
     });
+    var locOk = mode === "visit" ? !!LOCS[locSel.value] : !!locSel.value;
+    locSel.classList.toggle("invalid", !locOk);
+    if (!locOk) bad.push(locSel);
     if (bad.length) {
       bad[0].focus();
       showError("Please check the highlighted fields.");
@@ -288,6 +333,7 @@
       startMonth: f.startMonth.value,
       notes: f.notes.value.trim(),
       slotId: mode === "visit" ? f.slotId.value : null,
+      location: locSel.value,
       smsConsent: true,
       sourceUrl: location.href
     };
@@ -307,7 +353,10 @@
 
     req.then(function (res) {
       if (res.ok) return done(slot);
-      if (res.error === "slot_full") {
+      if (res.error === "location_mismatch") {
+        showError("That time is at the other location. Please pick another time.");
+        loadSlots();
+      } else if (res.error === "slot_full") {
         showError("That time just filled up. Please choose another.");
         loadSlots();
       } else {
@@ -326,23 +375,25 @@
   }
 
   // ---------- Add to calendar ----------
-  var PLACE = "Root to Rise Microschool, 4700 King St, Alexandria, VA";
+  function placeFor() { var l = LOCS[locSel.value]; return l ? l.place : "Alexandria, VA"; }
   function calStamp(d) { return d.toISOString().replace(/[-:]/g, "").replace(/\.\d{3}/, ""); }
   function icsEscape(t) { return String(t).replace(/\\/g, "\\\\").replace(/([,;])/g, "\\$1").replace(/\n/g, "\\n"); }
   function buildCalendar(slot, child) {
     var start = new Date(slot.start);
     var end = new Date(start.getTime() + (slot.minutes || 30) * 60000);
-    var title = "Tour at Root to Rise Microschool";
-    var details = "Your family tour at Root to Rise. Bring " + child + " along! See the space, meet the staff, and ask us anything.";
+    var l = LOCS[locSel.value];
+    var PLACE = placeFor();
+    var title = "Tour at " + (l ? l.name.replace(/^the /, "") : "RootEd Foundation");
+    var details = "Your family tour at " + (l ? l.name : "RootEd") + ". Bring " + child + " along! See the space, meet the staff, and ask us anything.";
     els.calGoogle.href = "https://calendar.google.com/calendar/render?action=TEMPLATE" +
       "&text=" + encodeURIComponent(title) +
       "&dates=" + calStamp(start) + "/" + calStamp(end) +
       "&details=" + encodeURIComponent(details) +
       "&location=" + encodeURIComponent(PLACE);
     var ics = [
-      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//Root to Rise//Visit//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
+      "BEGIN:VCALENDAR", "VERSION:2.0", "PRODID:-//RootEd Foundation//Visit//EN", "CALSCALE:GREGORIAN", "METHOD:PUBLISH",
       "BEGIN:VEVENT",
-      "UID:" + slot.id + "-" + calStamp(new Date()) + "@roottorisemicroschool.com",
+      "UID:" + slot.id + "-" + calStamp(new Date()) + "@rooted-foundation.org",
       "DTSTAMP:" + calStamp(new Date()),
       "DTSTART:" + calStamp(start),
       "DTEND:" + calStamp(end),
@@ -364,12 +415,13 @@
         weekday: "long", month: "long", day: "numeric", hour: "numeric", minute: "2-digit", timeZone: TZ
       });
       els.successTitle.textContent = "See you soon, " + name + "!";
-      els.successBody.textContent = "Your visit is booked for " + when + " at 4700 King St, Alexandria, VA. We'll send a confirmation and a reminder the day before. Bring " + child + " along!";
+      var l = LOCS[locSel.value];
+      els.successBody.textContent = "Your visit to " + (l ? l.name : "RootEd") + " is booked for " + when + (l ? " at " + l.address : "") + ". We'll send a confirmation and a reminder the day before. Bring " + child + " along!";
       buildCalendar(slot, child);
     } else {
       els.addCal.hidden = true;
       els.successTitle.textContent = "Thank you, " + name + "!";
-      els.successBody.textContent = "We'll be in touch personally within one business day with more about Root to Rise. We can't wait to learn more about " + child + ".";
+      els.successBody.textContent = "We'll be in touch personally within one business day with more about RootEd Foundation. We can't wait to learn more about " + child + ".";
     }
     form.hidden = true;
     els.success.hidden = false;
