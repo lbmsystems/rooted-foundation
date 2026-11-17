@@ -438,8 +438,3 @@ label.check .optional { margin-left: 4px; }
   .reg .intro .lede { font-size: 15px; }
 }
 
-/* Placeholder pages (until the real site design lands) */
-.holding { grid-template-columns: 1fr; max-width: 760px; }
-.holding .intro { position: static; }
-.holding .lede a { color: var(--ink); text-underline-offset: 4px; text-decoration-color: var(--clay); }
-.holding-links { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }

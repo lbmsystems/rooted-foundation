@@ -3,9 +3,7 @@
 The one website for RootEd Foundation and both Root to Rise locations. Hosted on Cloudflare Pages.
 
 ```
-/                 home (placeholder until the real design lands)
-/schoolhouse      RootEd School House, 5700 Colfax Ave (placeholder)
-/microschool      Microschool & Project Center, 4700 King St (placeholder)
+/                 home: the RootEd Foundation site (from the lbm.systems/rooted-draft design), both programs on one page
 /visit            schedule a tour or request info  -> creates a Lead + Student in Airtable
 /register         family registration after acceptance (private link + child's birthday)
 ```
@@ -31,9 +29,9 @@ so old links and printed QR codes still work:
 
 | Domain | Goes to |
 |---|---|
-| roottorisemicroschool.com | rooted-foundation.org/microschool |
+| roottorisemicroschool.com | rooted-foundation.org (home, for now) |
 | visit.roottorisemicroschool.com | rooted-foundation.org/visit (keeps `?info`) |
-| rooted-schoolhouse.com | rooted-foundation.org/schoolhouse |
+| rooted-schoolhouse.com | rooted-foundation.org (home, for now) |
 
 Set these up as Cloudflare **Redirect Rules** (301, preserve query string) on each domain.
 Leave each domain's **MX/email records alone** so addresses like admin@roottorisemicroschool.com keep working.
