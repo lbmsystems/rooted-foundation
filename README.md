@@ -13,6 +13,17 @@ The one website for RootEd Foundation and both Root to Rise locations. Hosted on
 `/visit` and `/register` talk to the Cloudflare Worker in `lbmsystems/r2r-visit` (`worker/`), which holds the
 Airtable token. Nothing secret lives in this repo.
 
+## Password (draft mode)
+
+The whole site sits behind a password prompt (`functions/_middleware.js`) while it's a draft.
+The password is the `SITE_PASSWORD` secret in Cloudflare → Workers & Pages → rooted-foundation → Settings →
+Variables and Secrets. Any username works. If the secret is missing, the site shows nothing.
+Changing the password takes effect on the next deploy (merge anything, or Retry the latest deployment).
+To launch publicly, delete `functions/_middleware.js`.
+
+Note: while this is on, families can't reach `/register` either. Turn it off (or exempt `/register`) before
+sending real registration links.
+
 ## Location domains
 
 The location .coms don't host anything. Each one redirects to its section here and keeps the rest of the path,
