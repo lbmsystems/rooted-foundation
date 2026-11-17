@@ -1,0 +1,186 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Registration · Root to Rise</title>
+  <meta name="robots" content="noindex, nofollow" />
+  <meta name="referrer" content="no-referrer" />
+  <link rel="icon" href="/assets/logo-placeholder.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@300;400;500;600&family=Poppins:wght@300;400;500&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/styles.css?v=14" />
+</head>
+<body class="reg">
+  <header class="site-header">
+    <a class="brand" href="/" aria-label="Root to Rise Microschool home">
+      <img src="/assets/logo-placeholder.png" alt="Root to Rise Microschool" width="110" height="137" />
+    </a>
+    <a class="back-link" href="/">← Back to main site</a>
+  </header>
+
+  <main class="layout">
+    <section class="intro">
+      <p class="eyebrow">Family registration</p>
+      <h1 id="intro-title">Welcome to<br />Root to Rise.</h1>
+      <p class="lede">
+        We're so glad your family is joining us. This is where you'll share what we need
+        to care for your child day to day and upload their records. It takes about 15 minutes,
+        and you can save and come back anytime using the same link.
+      </p>
+
+      <div class="expect">
+        <h2 class="expect-title">Have these nearby</h2>
+        <ul class="facts">
+          <li><span class="dot"></span><div><strong>Contacts</strong><span>Names and phone numbers for emergency contacts and anyone who'll pick up.</span></div></li>
+          <li><span class="dot"></span><div><strong>Health records</strong><span>Immunization record and a recent physical, as a photo or PDF.</span></div></li>
+          <li><span class="dot"></span><div><strong>Support plans</strong><span>An IEP or 504 plan, if your child has one.</span></div></li>
+          <li><span class="dot"></span><div><strong>Your doctor's info</strong><span>Your child's pediatrician or practice and their phone number.</span></div></li>
+        </ul>
+        <p class="private-note">Everything you share here goes only to the Root to Rise team. Health records, support plans and custody papers are kept confidential.</p>
+      </div>
+    </section>
+
+    <section class="card" aria-live="polite">
+
+      <!-- Birthday check -->
+      <form id="view-gate" class="view" novalidate hidden>
+        <div class="form-head">
+          <h2>Open your registration</h2>
+          <p>For your child's privacy, please confirm their birthday.</p>
+        </div>
+        <fieldset>
+          <label>Child's birthday<input name="birthday" type="date" required autocomplete="off" /></label>
+        </fieldset>
+        <p class="form-error" role="alert" hidden></p>
+        <button type="submit" class="btn-primary">Continue</button>
+      </form>
+
+      <!-- Not available -->
+      <div id="view-closed" class="view message" hidden tabindex="-1">
+        <div class="sprout" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="56" height="56"><path d="M32 58V30" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M32 34c-10 0-16-6-16-16 10 0 16 6 16 16zM32 30c0-10 6-16 16-16 0 10-6 16-16 16z" fill="currentColor" opacity=".85"/></svg>
+        </div>
+        <h2 id="closed-title"></h2>
+        <p id="closed-body"></p>
+        <a class="btn-secondary" href="mailto:admin@roottorisemicroschool.com">Email us</a>
+      </div>
+
+      <!-- Registration -->
+      <div id="view-form" class="view" hidden>
+        <div class="form-head">
+          <h2 id="form-title">Registration</h2>
+          <p id="form-sub"></p>
+        </div>
+
+        <ol class="steps" aria-label="Registration steps">
+          <li data-step="0">Family</li>
+          <li data-step="1">Documents</li>
+          <li data-step="2">Sign</li>
+        </ol>
+
+        <!-- Step 1 -->
+        <form class="step" data-step="0" novalidate>
+          <fieldset>
+            <legend>About your child</legend>
+            <div class="row two">
+              <label><span>Name they go by <span class="optional">Optional</span></span><input name="preferredName" /></label>
+              <label>Pediatrician or practice<input name="pediatrician" placeholder="Name and phone" /></label>
+            </div>
+            <label class="check"><input type="checkbox" name="hasMedical" /> My child has allergies, a medical condition, or takes medicine</label>
+            <div class="reveal" data-when="hasMedical" hidden>
+              <label>Tell us what staff should know<textarea name="allergies" rows="3" placeholder="Allergies, reactions, medicines, what to do"></textarea></label>
+            </div>
+            <p class="sublabel">Does your child have a learning support plan?</p>
+            <div class="chips">
+              <label class="check"><input type="checkbox" name="supportPlan" value="IEP" /> IEP</label>
+              <label class="check"><input type="checkbox" name="supportPlan" value="504 Plan" /> 504 plan</label>
+              <label class="check"><input type="checkbox" name="supportPlan" value="Informal accommodations" /> Informal accommodations</label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Your household</legend>
+            <label>Home address<textarea name="address" rows="2" autocomplete="street-address"></textarea></label>
+            <p class="sublabel">Second parent or guardian <span class="optional">Optional</span></p>
+            <div class="row two">
+              <label>Name<input name="g2name" autocomplete="off" /></label>
+              <label>Relationship<input name="g2relationship" placeholder="e.g. Mom, Dad, Grandparent" /></label>
+            </div>
+            <div class="row two">
+              <label>Phone<input name="g2phone" type="tel" inputmode="tel" /></label>
+              <label>Email<input name="g2email" type="email" /></label>
+            </div>
+          </fieldset>
+
+          <fieldset>
+            <legend>Emergency contacts</legend>
+            <p class="hint top">Who should we call if we can't reach you?</p>
+            <div class="people" data-list="emergency" data-max="4"></div>
+            <button type="button" class="link-btn add-person" data-list="emergency">+ Add another contact</button>
+          </fieldset>
+
+          <fieldset>
+            <legend>Who can pick up</legend>
+            <p class="hint top">We'll ask for ID the first time someone new picks up.</p>
+            <div class="people" data-list="pickups" data-max="6"></div>
+            <button type="button" class="link-btn add-person" data-list="pickups">+ Add another person</button>
+            <label class="check spaced"><input type="checkbox" name="hasCustody" /> There's a custody or court order about who can pick up</label>
+            <label><span>Anything else about pickup? <span class="optional">Optional</span></span><textarea name="pickupNotes" rows="2"></textarea></label>
+          </fieldset>
+        </form>
+
+        <!-- Step 2 -->
+        <div class="step" data-step="1" hidden>
+          <p class="hint top">Photos or PDFs work. Up to 5 MB each. A clear phone photo is fine.</p>
+          <ul id="doc-list" class="doc-list"></ul>
+        </div>
+
+        <!-- Step 3 -->
+        <form class="step" data-step="2" novalidate hidden>
+          <fieldset>
+            <legend>Permissions</legend>
+            <label class="check"><input type="checkbox" name="medicalConsent" /> <span>If I can't be reached in an emergency, I authorize Root to Rise to get my child emergency medical care.</span></label>
+            <label class="check"><input type="checkbox" name="photoConsent" /> <span>Root to Rise may share photos of my child in family updates and on social media. <span class="optional">Optional</span></span></label>
+            <label class="check"><input type="checkbox" name="handbook" /> <span id="handbook-text">I've received the Root to Rise family handbook and agree to its policies.</span></label>
+          </fieldset>
+          <fieldset>
+            <legend>Signature</legend>
+            <label>Your full name<input name="signedBy" autocomplete="name" /></label>
+            <p class="hint">Typing your name here counts as your signature.</p>
+          </fieldset>
+          <div id="missing" class="missing" hidden>
+            <p>A few things are still needed:</p>
+            <ul></ul>
+          </div>
+        </form>
+
+        <p id="step-error" class="form-error" role="alert" hidden></p>
+        <div class="step-nav">
+          <button type="button" class="btn-ghost" id="back-btn">Back</button>
+          <button type="button" class="btn-primary" id="next-btn">Save and continue</button>
+        </div>
+        <p class="saved-note" id="saved-note" aria-live="polite"></p>
+      </div>
+
+      <!-- Done -->
+      <div id="view-done" class="view message" hidden tabindex="-1">
+        <div class="sprout" aria-hidden="true">
+          <svg viewBox="0 0 64 64" width="56" height="56"><path d="M32 58V30" stroke="currentColor" stroke-width="3" stroke-linecap="round" fill="none"/><path d="M32 34c-10 0-16-6-16-16 10 0 16 6 16 16zM32 30c0-10 6-16 16-16 0 10-6 16-16 16z" fill="currentColor" opacity=".85"/></svg>
+        </div>
+        <h2>Registration sent!</h2>
+        <p id="done-body"></p>
+        <a class="btn-secondary" href="/">Back to Root to Rise</a>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p>Root to Rise Microschool · Rooted in community. Rising in possibility.</p>
+  </footer>
+
+  <script src="/config.js?v=14"></script>
+  <script src="/register/register.js?v=14"></script>
+</body>
+</html>
