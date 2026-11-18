@@ -7,7 +7,7 @@
 <title>RootEd Foundation — Draft</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@500;600;700&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
 <style>
 :root{
   --ground:#E6E3DF; --paper:#F4F2EE; --ink:#393939; --ink-2:#4A4541; --muted:#5E5953;
@@ -22,7 +22,7 @@ img{display:block;max-width:100%}
 h1,h2,h3,h4{font-family:var(--display);font-weight:600;margin:0}
 p{margin:0}
 .wrap{max-width:1360px;margin:0 auto}
-.page{padding:0 16px}
+.page{padding:0 16px;overflow-x:clip} /* clip keeps the sticky header working; stops the header divider from widening the page */
 .draft{background:var(--ink);color:var(--paper);font-size:13px;text-align:center;padding:8px 16px}
 .btn{display:inline-block;background:var(--ink);color:#fff;text-decoration:none;padding:12px 22px;border-radius:999px;font-weight:500}
 .btn:hover{color:#fff;background:#222}
@@ -251,6 +251,49 @@ html{scroll-padding-top:var(--header-h)}
   .footer{padding:48px 12px;gap:28px}
   .footer img{height:56px}
 }
+/* How we teach (SAS-style, option B) */
+.teach2{margin:16px -16px 0;color:var(--dark)}
+.t2-band{position:relative;overflow:hidden}
+.t2-statement{background:#F5F4F0;padding:140px 64px}
+.t2-inout{background:#ECEAE4;padding:130px 64px}
+.t2-inner{max-width:1200px;margin:0 auto;position:relative}
+.t2-eyebrow{font-family:var(--body);font-size:13px;letter-spacing:.14em;text-transform:uppercase;font-weight:500;color:var(--muted);margin:0 0 28px}
+.t2-quote{font-family:var(--display);font-size:clamp(30px,4.2vw,56px);line-height:1.24;font-weight:500;letter-spacing:-.01em;max-width:940px}
+.t2-mark{position:relative;white-space:nowrap}
+.t2-mark svg{position:absolute;pointer-events:none;overflow:visible}
+.t2-circle svg{left:-.28em;top:-.12em;width:calc(100% + .56em);height:calc(100% + .24em)}
+.t2-squig svg{left:0;bottom:-.14em;width:100%;height:.22em}
+.t2-under svg{left:0;bottom:-.06em;width:100%;height:.18em}
+.t2-sticker{position:absolute;right:0;top:40px;width:230px;height:290px;object-fit:cover;border:10px solid #fff;border-radius:16px;box-shadow:0 6px 14px rgba(0,0,0,.18);transform:rotate(8deg)}
+.t2-grid{display:grid;grid-template-columns:minmax(0,5fr) minmax(0,6fr);gap:72px;align-items:center}
+.t2-arrow{display:block;margin-left:140px}
+.t2-h{font-size:clamp(40px,4.6vw,66px);line-height:1.12;font-weight:400;letter-spacing:-.02em;margin:20px 0 24px}
+.t2-h b{font-weight:800}
+.t2-copy p{font-size:18px;line-height:1.6}
+.t2-photos{position:relative;height:620px}
+.t2-dots{position:absolute;right:-40px;top:0;width:min(580px,100%);height:480px;background-image:radial-gradient(#B9B2A8 1.6px,transparent 1.7px);background-size:18px 18px}
+.t2-pol{position:absolute;object-fit:cover;border:10px solid #fff;box-shadow:2px 2px 4px rgba(26,26,26,.25)}
+.t2-p1{right:0;top:50px;width:min(520px,88%);height:380px;transform:rotate(2deg)}
+.t2-p2{left:0;top:360px;width:280px;height:220px;transform:rotate(-4deg)}
+@media (max-width: 1180px){
+  .t2-quote{max-width:none}
+  .t2-sticker{position:static;display:block;margin:44px 12px 0 auto;width:160px;height:200px}
+}
+@media (max-width: 820px){
+  .teach2{margin:12px -12px 0}
+  .t2-statement{padding:72px 24px}
+  .t2-inout{padding:64px 24px 72px}
+  .t2-eyebrow{margin-bottom:20px}
+  .t2-sticker{width:120px;height:148px;border-width:8px;border-radius:12px;margin-top:32px}
+  .t2-grid{grid-template-columns:1fr;gap:32px}
+  .t2-arrow{margin-left:auto;width:110px;height:46px}
+  .t2-h{margin:14px 0 18px}
+  .t2-copy p{font-size:16px}
+  .t2-photos{height:400px}
+  .t2-dots{left:30px;right:-24px;width:auto;height:300px}
+  .t2-p1{width:290px;height:220px;top:30px;max-width:calc(100% - 10px)}
+  .t2-p2{width:170px;height:130px;top:230px;border-width:8px}
+}
 @media (prefers-reduced-motion: reduce){
   html{scroll-behavior:auto}
   .clip,.bubble,.hero,.dots span{transition:none}
@@ -344,18 +387,26 @@ html{scroll-padding-top:var(--header-h)}
   </div>
 </section>
 
-<section id="approach" class="section approach wrap">
-  <div class="split">
-    <div class="lead teach-lead">
-      <div class="teach-photo ph-img"><img src="assets/photos/painting.jpg" alt="Teachers painting with young children at a low table" loading="lazy"></div>
-      <h2 class="h-xl">How we teach</h2>
-      <p class="lead-sub ink">Tuesdays and Thursdays focus on academics. Wednesdays and Fridays take learning into the community through field trips and projects.</p>
+<section id="approach" class="teach2" aria-labelledby="teach-title">
+  <div class="t2-band t2-statement">
+    <div class="t2-inner">
+      <h2 id="teach-title" class="t2-eyebrow">How we teach</h2>
+      <p class="t2-quote">Children learn by stage, not grade. Each one can stay rooted longer where they need support, or <span class="t2-mark t2-circle">rise ahead<svg aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none" fill="none"><path d="M34 10 C 100 -2, 196 8, 196 40 C 196 74, 50 80, 12 56 C -8 40, 24 14, 80 8" stroke="#A4472A" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span> where they shine, building <span class="t2-mark t2-squig">real projects<svg aria-hidden="true" viewBox="0 0 120 12" preserveAspectRatio="none" fill="none"><path d="M2 7 Q 12 1, 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 118 7" stroke="#C9A13B" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span> and life skills from first steps to <span class="t2-mark t2-under">graduation<svg aria-hidden="true" viewBox="0 0 200 10" preserveAspectRatio="none" fill="none"><path d="M2 6 C 60 2, 140 8, 198 4" stroke="#2E2B29" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>.</p>
+      <img class="t2-sticker" src="assets/photos/building.jpg" alt="Two students building a structure from spaghetti and marshmallows" loading="lazy">
     </div>
-    <div class="body">
-      <div class="row"><h3>Each child sets the pace</h3><p>Multi-age groups let students move ahead where they're ready and slow down where they need to. Core subjects are taught in depth, not rushed.</p></div>
-      <div class="row"><h3>Skills for real life</h3><p>Sustainability, wellness and entrepreneurship are part of the week, not electives. Students grow, cook, build and sell.</p></div>
-      <div class="row"><h3>Rooted in culture and community</h3><p>We honor each child's cultural identity and teach them to look out for each other. Older students mentor younger ones.</p></div>
-      <div class="row"><h3>Ready for what's next</h3><p>Our academic program prepares students for the SAT, college and whatever path they choose.</p></div>
+  </div>
+  <div class="t2-band t2-inout">
+    <div class="t2-inner t2-grid">
+      <div class="t2-copy">
+        <svg class="t2-arrow" aria-hidden="true" width="170" height="70" viewBox="0 0 190 80" fill="none" stroke="#2E2B29" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M6 70 C 40 20, 110 6, 176 28"/><path d="M160 14 L177 28 L158 38"/></svg>
+        <h3 class="t2-h">Learning <b>in</b> &amp; <b>out</b> of the classroom</h3>
+        <p>Sustainability, wellness and entrepreneurship are part of the week, not electives. Students grow, cook, build and sell, and older students mentor younger ones.</p>
+      </div>
+      <div class="t2-photos">
+        <div class="t2-dots" aria-hidden="true"></div>
+        <img class="t2-pol t2-p1" src="assets/photos/music.jpg" alt="Children making music together" loading="lazy">
+        <img class="t2-pol t2-p2" src="assets/photos/toddlers.jpg" alt="Toddlers playing in the gym" loading="lazy">
+      </div>
     </div>
   </div>
 </section>
