@@ -22,6 +22,18 @@ To launch publicly, delete `functions/_middleware.js`.
 Note: while this is on, families can't reach `/register` either. Turn it off (or exempt `/register`) before
 sending real registration links.
 
+
+## Photos and videos
+
+All site media comes from one Google Drive folder (in the arneice@lbm.systems Drive):
+**RootEd Foundation – Website Media**: https://drive.google.com/drive/folders/1eX9l_zG1FzTwdBxavBL3ugLbHtmUb1uF
+
+- `Images/` (folder id `1zz8UGSJmvIrnI5wX8yQaZNWul821DEkL`): photos and graphics for the site
+- `Videos/` (folder id `15C_jQwoa40sGxM-pRNa0qwdvmK0BMx3-`): video clips
+
+Drop files there, then ask for them by name or describe where they go. They get resized, compressed and
+committed to `assets/` here (the site serves its own copies, so nothing on the site breaks if Drive files move).
+
 ## Location domains
 
 The location .coms don't host anything. Each one redirects to its section here and keeps the rest of the path,
