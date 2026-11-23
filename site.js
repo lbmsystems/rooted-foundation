@@ -92,3 +92,28 @@
   });
   lb.addEventListener('click', function(){ lb.close(); });
 })();
+
+/* Stage carousel: swipe on phones, arrows everywhere. */
+(function(){
+  document.querySelectorAll('.stage-carousel').forEach(function(c){
+    var track = c.querySelector('.sc-track'), cards = [].slice.call(track.children);
+    var prev = c.querySelector('.sc-prev'), next = c.querySelector('.sc-next'), count = c.querySelector('.sc-count');
+    function current(){
+      var left = track.scrollLeft, best = 0;
+      cards.forEach(function(el, i){ if (Math.abs(el.offsetLeft - track.offsetLeft - left) < Math.abs(cards[best].offsetLeft - track.offsetLeft - left)) best = i; });
+      return best;
+    }
+    function update(){
+      var i = current(), atEnd = track.scrollLeft + track.clientWidth >= track.scrollWidth - 4;
+      count.textContent = (atEnd ? cards.length : i + 1) + ' / ' + cards.length;
+      prev.disabled = track.scrollLeft <= 4; next.disabled = atEnd;
+    }
+    function go(d){ var i = Math.max(0, Math.min(cards.length - 1, current() + d)); track.scrollTo({ left: cards[i].offsetLeft - track.offsetLeft, behavior: 'smooth' }); }
+    prev.addEventListener('click', function(){ go(-1); });
+    next.addEventListener('click', function(){ go(1); });
+    track.addEventListener('scroll', function(){ requestAnimationFrame(update); }, { passive:true });
+    track.addEventListener('keydown', function(e){ if (e.key === 'ArrowRight') { e.preventDefault(); go(1); } if (e.key === 'ArrowLeft') { e.preventDefault(); go(-1); } });
+    window.addEventListener('resize', update);
+    update();
+  });
+})();
