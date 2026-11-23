@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css?v=6">
+<link rel="stylesheet" href="/site.css?v=7">
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -178,19 +178,17 @@
   </div>
 </section>
 
-<section class="reveal wrap" id="reveal" aria-labelledby="reveal-title">
-  <div class="reveal-stage">
-    <p class="reveal-word" id="reveal-word" aria-hidden="true"><span>School</span> <span>House</span></p>
-    <div id="tiles"></div>
-    <div class="reveal-main ph-img" id="reveal-main">
-      <img src="/assets/photos/sh-exterior.jpg" alt="RootEd School House from the driveway, 5700 Colfax Ave, Alexandria, VA" width="1600" height="996" loading="lazy" decoding="async">
-      <div class="reveal-card" id="reveal-card">
-        <h2 id="reveal-title">The new RootEd School House, opening January 4, 2027</h2>
-        <p>A real house with a little-kids yard, mud kitchen and garden, a big-kids side, and a play room with a salt box and climbing wall.</p>
-        <button class="btn-secondary" type="button" data-open="pd-tour" aria-haspopup="dialog">Take a virtual tour</button>
-        <a class="more" href="/schoolhouse/">About the School House</a>
-      </div>
-    </div>
+<section class="strip" id="strip" aria-label="Photos from RootEd">
+  <div class="strip-track" id="strip-track">
+    <figure class="strip-card" style="--r:-3deg;--y:18px"><img class="zoom" src="/assets/photos/painting.jpg" alt="Young children painting together around a low table with a teacher" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:2deg;--y:-14px"><img class="zoom" src="/assets/photos/music.jpg" alt="Two students producing music on a keyboard and computer" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:-2deg;--y:26px"><img class="zoom" src="/assets/photos/phonics.jpg" alt="A teacher reading with a small group of children" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:3deg;--y:-6px"><img class="zoom" src="/assets/photos/building.jpg" alt="Two students building a spaghetti and marshmallow structure" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:-4deg;--y:10px"><img class="zoom" src="/assets/photos/toddlers.jpg" alt="Toddlers and a teacher on the mats in the RISE Gymnastics gym" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:2deg;--y:-18px"><img class="zoom" src="/assets/photos/fractions.jpg" alt="A student making a fractions and decimals poster" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:-2deg;--y:22px"><img class="zoom" src="/assets/photos/math.jpg" alt="A smiling child working on a math worksheet" width="1600" height="1200" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:3deg;--y:-8px"><img class="zoom" src="/assets/photos/multiply.jpg" alt="Students playing a multiplication game at a round table" width="1600" height="900" loading="lazy" decoding="async"></figure>
+    <figure class="strip-card" style="--r:-3deg;--y:14px"><img class="zoom" src="/assets/photos/sh-exterior.jpg" alt="RootEd School House at 5700 Colfax Ave, Alexandria, VA" width="1600" height="996" loading="lazy" decoding="async"></figure>
   </div>
 </section>
 
@@ -275,25 +273,6 @@
   </div>
 </section>
 
-<dialog class="pd" id="pd-tour" aria-labelledby="pd-tour-title">
-  <div class="pd-inner">
-    <div class="pd-top"><img src="/assets/schoolhouse.png" alt="" width="900" height="272"><button class="pd-close" type="button" data-close aria-label="Close"><svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="#393939" stroke-width="2" stroke-linecap="round"><path d="M6 6l12 12M18 6L6 18"/></svg></button></div>
-    <span class="pd-tag">Opening January 4, 2027</span>
-    <h2 id="pd-tour-title" class="pd-age">Take a virtual tour</h2>
-    <p class="pd-copy">A look at the new RootEd School House, room by room.</p>
-    <!-- Renders: replace each <span>Render coming soon</span> with <img src="assets/photos/FILE.jpg" alt="DESCRIPTION"> -->
-    <div class="tour-grid">
-      <figure><div class="tour-shot"><span>Render coming soon</span></div><figcaption>Great Room</figcaption></figure>
-      <figure><div class="tour-shot"><span>Render coming soon</span></div><figcaption>Play Room</figcaption></figure>
-      <figure><div class="tour-shot"><span>Render coming soon</span></div><figcaption>Classroom 1</figcaption></figure>
-      <figure><div class="tour-shot"><span>Render coming soon</span></div><figcaption>Littles Classroom</figcaption></figure>
-    </div>
-    <div class="pd-actions">
-      <a class="btn" href="/visit">Book a visit</a>
-      <small>Tours run Mondays and Fridays</small>
-    </div>
-  </div>
-</dialog>
 
 
 </main>
@@ -408,70 +387,22 @@
   if (data.length < 2) { ['.ctrl.prev','.ctrl.next'].forEach(function(q){ document.querySelector(q).hidden = true; }); dotsEl.hidden = true; }
   setPauseUi(); layout(); restart();
 
-  /* ---------- Pinned Schoolhouse reveal ---------- */
-  var reveal = document.getElementById('reveal');
-  var main = document.getElementById('reveal-main');
-  var card = document.getElementById('reveal-card');
-  var tilesEl = document.getElementById('tiles');
-  var word = document.getElementById('reveal-word');
-  var houseImg = main.querySelector('img');
-  // The house starts as a small card in the middle, with "School House" peeking out
-  // behind it and class photos floating around. Scrolling grows the house to fill the
-  // frame while the photos drift up and away at different speeds.
-  // Photo spots: left %, top %, width as a share of the stage width, height/width ratio, drift speed.
-  var desk = { card:{ w:0.36, h:0.5 }, photos:[
-    ['painting', 4, 7, 0.09, 0.78, 1.1], ['multiply', 21, 76, 0.075, 1.2, 0.7], ['phonics', 75, 5, 0.085, 1.15, 0.9],
-    ['math', 89, 32, 0.06, 0.8, 1.3], ['music', 82, 73, 0.08, 0.8, 0.8], ['toddlers', 45, 85, 0.06, 0.75, 1.2] ] };
-  var phone = { card:{ w:0.72, h:0.3 }, photos:[
-    ['painting', 3, 3, 0.22, 1.2, 1.1], ['phonics', 70, 6, 0.2, 0.8, 0.8], ['music', 76, 79, 0.2, 1.2, 1.2],
-    ['toddlers', 4, 80, 0.22, 0.78, 0.9], ['math', 41, 90, 0.15, 1.0, 1.3] ] };
-  var set = null, tiles = [], box = null;
-  function buildTiles(){
-    set = mq.matches ? phone : desk;
-    var stage = reveal.querySelector('.reveal-stage');
-    var SW = stage.clientWidth, SH = stage.clientHeight;
-    var W = main.offsetWidth, H = main.offsetHeight;
-    var cw = Math.round(W * set.card.w), ch = Math.round(H * set.card.h);
-    box = { W:W, H:H, x:(W - cw) / 2, y:(H - ch) / 2, w:cw, h:ch, SH:SH };
-    if (word) word.style.setProperty('--card-h', ch + 'px');
-    tilesEl.innerHTML = '';
-    tiles = set.photos.map(function(t){
-      var el = document.createElement('div');
-      var w = Math.round(SW * t[3]);
-      el.className = 'tile'; el.setAttribute('aria-hidden', 'true');
-      el.style.left = t[1] + '%'; el.style.top = t[2] + '%';
-      el.style.width = w + 'px'; el.style.height = Math.round(w * t[4]) + 'px';
-      el.innerHTML = '<img src="/assets/photos/' + t[0] + '.jpg" alt="" decoding="async">';
-      el._speed = t[5];
-      tilesEl.appendChild(el); return el;
-    });
-  }
-  function update(){
-    var stageH = reveal.querySelector('.reveal-stage').offsetHeight;
-    var r = reveal.getBoundingClientRect();
-    var p = reduce ? 1 : Math.max(0, Math.min(1, -r.top / (r.height - stageH)));
-    var e = 1 - Math.pow(1 - Math.min(1, p / 0.7), 2);      // house grows
-    var fade = Math.max(0, Math.min(1, (p - 0.15) / 0.4));    // photos and word leave
-    var f = Math.max(0, Math.min(1, (p - 0.6) / 0.3));        // card text arrives
-    tiles.forEach(function(el){
-      el.style.transform = 'translateY(' + (-p * el._speed * box.SH * 0.6).toFixed(1) + 'px)';
-      el.style.opacity = (1 - fade).toFixed(3);
-      el.style.pointerEvents = fade > 0.3 ? 'none' : '';
-    });
-    if (word) { word.style.opacity = (1 - fade).toFixed(3); word.style.transform = 'scale(' + (1 + e * 0.15).toFixed(3) + ')'; }
-    var b = box, k = 1 - e;
-    main.style.clipPath = 'inset(' + (b.y * k).toFixed(1) + 'px ' + ((b.W - b.x - b.w) * k).toFixed(1) + 'px ' + ((b.H - b.y - b.h) * k).toFixed(1) + 'px ' + (b.x * k).toFixed(1) + 'px)';
-    if (houseImg) houseImg.style.transform = 'scale(' + (1 + 0.12 * k).toFixed(3) + ')';
-    card.style.opacity = f.toFixed(3);
-    card.style.visibility = f > 0.05 ? 'visible' : 'hidden';
-    card.style.transform = 'translateY(' + Math.round((1 - f) * 40) + 'px)';
-  }
-  var ticking = false;
-  function onScroll(){ if (ticking) return; ticking = true; requestAnimationFrame(function(){ ticking = false; update(); }); }
-  buildTiles(); update();
-  window.addEventListener('scroll', onScroll, { passive:true });
-  window.addEventListener('resize', function(){ buildTiles(); update(); });
-  mq.addEventListener('change', function(){ buildTiles(); update(); });
+  /* ---------- Photo strip: slides sideways as the page scrolls ---------- */
+  var strip = document.getElementById('strip');
+  var track = document.getElementById('strip-track');
+  if (strip && track && !reduce) {
+    var stripTick = false;
+    var moveStrip = function(){
+      stripTick = false;
+      var r = strip.getBoundingClientRect(), vh = window.innerHeight, vw = strip.clientWidth;
+      var t = Math.max(0, Math.min(1, (vh - r.top) / (vh + r.height)));
+      var start = vw * 0.35, end = -(track.scrollWidth - vw * 0.65);
+      track.style.transform = 'translate3d(' + (start + (end - start) * t).toFixed(1) + 'px,0,0)';
+    };
+    window.addEventListener('scroll', function(){ if (!stripTick) { stripTick = true; requestAnimationFrame(moveStrip); } }, { passive:true });
+    window.addEventListener('resize', moveStrip);
+    moveStrip();
+  } else if (strip) { strip.classList.add('is-static'); }
 
   /* ---------- Program dialogs ---------- */
   document.querySelectorAll('[data-open]').forEach(function(btn){
