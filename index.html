@@ -287,6 +287,8 @@ html{scroll-padding-top:var(--header-h)}
 .t2-squig svg{left:0;bottom:-.14em;width:100%;height:.22em}
 .t2-under svg{left:0;bottom:-.06em;width:100%;height:.18em}
 .t2-sticker{position:absolute;right:0;top:40px;width:230px;height:290px;object-fit:cover;border:10px solid #fff;border-radius:16px;box-shadow:0 6px 14px rgba(0,0,0,.18);transform:rotate(8deg)}
+.t2-sticker-2{top:300px;right:-40px;width:240px;height:180px;transform:rotate(-7deg);z-index:1}
+.t2-sticker:not(.t2-sticker-2){z-index:2}
 .t2-grid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1fr);gap:72px;align-items:center}
 .t2-photos{position:relative;height:620px}
 .t2-dots{position:absolute;right:-40px;top:0;width:min(580px,100%);height:480px;background-image:radial-gradient(#B9B2A8 1.6px,transparent 1.7px);background-size:18px 18px}
@@ -296,6 +298,7 @@ html{scroll-padding-top:var(--header-h)}
 @media (max-width: 1180px){
   .t2-quote{max-width:none}
   .t2-sticker{position:static;display:block;margin:44px 12px 0 auto;width:160px;height:200px}
+  .t2-sticker-2{position:relative;top:auto;right:auto;width:220px;height:165px;margin:-120px 150px 0 auto}
 }
 @media (max-width: 820px){
   .teach2{margin:12px -12px 0}
@@ -303,6 +306,7 @@ html{scroll-padding-top:var(--header-h)}
   .t2-inout{padding:64px 24px 72px}
   .t2-eyebrow{margin-bottom:20px}
   .t2-sticker{width:120px;height:148px;border-width:8px;border-radius:12px;margin-top:32px}
+  .t2-sticker-2{width:170px;height:128px;margin:-86px auto 0 6%}
   .t2-grid{grid-template-columns:1fr;gap:32px}
   .t2-photos{height:400px}
   .t2-dots{left:30px;right:-24px;width:auto;height:300px}
@@ -410,6 +414,7 @@ html{scroll-padding-top:var(--header-h)}
       <h2 id="teach-title" class="t2-eyebrow">How we teach</h2>
       <p class="t2-quote">Children learn by stage, not grade. Each one can stay rooted longer where they need support, or <span class="t2-mark t2-circle">rise ahead<svg aria-hidden="true" viewBox="0 0 200 80" preserveAspectRatio="none" fill="none"><path d="M34 10 C 100 -2, 196 8, 196 40 C 196 74, 50 80, 12 56 C -8 40, 24 14, 80 8" stroke="#A4472A" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span> where they shine, building <span class="t2-mark t2-squig">real projects<svg aria-hidden="true" viewBox="0 0 120 12" preserveAspectRatio="none" fill="none"><path d="M2 7 Q 12 1, 22 7 T 42 7 T 62 7 T 82 7 T 102 7 T 118 7" stroke="#C9A13B" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span> and life skills from first steps to <span class="t2-mark t2-under">graduation<svg aria-hidden="true" viewBox="0 0 200 10" preserveAspectRatio="none" fill="none"><path d="M2 6 C 60 2, 140 8, 198 4" stroke="#2E2B29" stroke-width="3" stroke-linecap="round" vector-effect="non-scaling-stroke"/></svg></span>.</p>
       <img class="t2-sticker" src="assets/photos/building.jpg" alt="Two students building a structure from spaghetti and marshmallows" loading="lazy">
+      <img class="t2-sticker t2-sticker-2" src="assets/photos/painting.jpg" alt="Children painting together around a table" loading="lazy">
     </div>
   </div>
   <div class="t2-band t2-inout">
