@@ -105,6 +105,23 @@ h1 {
   color: var(--clay-deep);
   margin: 0 0 18px;
 }
+details.expect > summary {
+  list-style: none; cursor: pointer;
+  display: flex; align-items: center; justify-content: space-between; gap: 12px;
+}
+details.expect > summary::-webkit-details-marker { display: none; }
+details.expect > summary .expect-title { margin: 0; }
+details.expect > summary::after {
+  content: ""; flex: none; width: 9px; height: 9px;
+  border-right: 2px solid var(--clay-deep); border-bottom: 2px solid var(--clay-deep);
+  transform: rotate(45deg) translateY(-3px); transition: transform .2s ease;
+}
+details.expect[open] > summary::after { transform: rotate(-135deg) translateY(-3px); }
+details.expect[open] > summary { margin-bottom: 18px; }
+details.expect > summary:focus-visible { outline: 2px solid var(--clay-deep); outline-offset: 4px; border-radius: 4px; }
+@media (max-width: 880px) {
+  details.expect { margin-top: 20px; padding-top: 16px; }
+}
 
 /* Card */
 .card {
