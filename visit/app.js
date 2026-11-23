@@ -134,7 +134,7 @@
     sel.appendChild(flex);
   })();
 
-  // Birthday: no future dates, back ~18 years (School House is 2 to 12, Microschool 12 and up).
+  // Birthday: no future dates, back ~18 years (School House is 2 to 12, Microschool 13 and up).
   (function bdayLimits() {
     var b = form.elements.childBirthday;
     var max = new Date();
