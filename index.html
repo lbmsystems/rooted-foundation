@@ -571,7 +571,25 @@ html{scroll-padding-top:var(--header-h)}
     hero.style.backgroundColor = data[idx].color;
   }
   function go(i){ idx = ((i % 5) + 5) % 5; layout(); restart(); }
-  function restart(){ clearInterval(timer); if (playing) timer = setInterval(function(){ go(idx + 1); }, 6000); }
+  // Advance after the current video plays through once; slides without video wait 6s.
+  var shownIdx = -1, endedHandler = null;
+  function restart(){
+    clearInterval(timer); clearTimeout(timer);
+    var cur = clips[idx].querySelector('video');
+    clips.forEach(function(c, i){ var v = c.querySelector('video'); if (!v) return; v.loop = !(i === idx && playing); if (i !== idx && v.paused && !reduce) { var q = v.play(); if (q && q.catch) q.catch(function(){}); } });
+    if (endedHandler && endedHandler.v) endedHandler.v.removeEventListener('ended', endedHandler);
+    endedHandler = null;
+    var fresh = shownIdx !== idx; shownIdx = idx;
+    if (!playing) return;
+    if (!cur) { timer = setTimeout(function(){ go(idx + 1); }, 6000); return; }
+    if (fresh) { try { cur.currentTime = 0; } catch (e) {} }
+    var p = cur.play(); if (p && p.catch) p.catch(function(){});
+    endedHandler = function(){ go(idx + 1); }; endedHandler.v = cur;
+    cur.addEventListener('ended', endedHandler);
+    // Fallback if the browser won't play it (e.g. low-power mode): move on after its length.
+    var wait = function(){ var d = isFinite(cur.duration) && cur.duration > 0 ? cur.duration : 20; return (d - (cur.currentTime || 0)) * 1000 + 2500; };
+    timer = setTimeout(function(){ if (cur.paused) go(idx + 1); else timer = setTimeout(function(){ go(idx + 1); }, wait()); }, wait());
+  }
   document.querySelector('.ctrl.prev').addEventListener('click', function(){ go(idx - 1); });
   document.querySelector('.ctrl.next').addEventListener('click', function(){ go(idx + 1); });
   var pauseBtn = document.querySelector('.ctrl.pause');
