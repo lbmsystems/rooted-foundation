@@ -105,6 +105,7 @@ h1 {
   color: var(--clay-deep);
   margin: 0 0 18px;
 }
+details.expect { border-bottom: 1px solid var(--line); padding-bottom: 28px; }
 details.expect > summary {
   list-style: none; cursor: pointer;
   display: flex; align-items: center; justify-content: space-between; gap: 12px;
@@ -120,7 +121,7 @@ details.expect[open] > summary::after { transform: rotate(-135deg) translateY(-3
 details.expect[open] > summary { margin-bottom: 18px; }
 details.expect > summary:focus-visible { outline: 2px solid var(--clay-deep); outline-offset: 4px; border-radius: 4px; }
 @media (max-width: 880px) {
-  details.expect { margin-top: 20px; padding-top: 16px; }
+  details.expect { margin-top: 20px; padding-top: 16px; padding-bottom: 16px; }
 }
 
 /* Card */
