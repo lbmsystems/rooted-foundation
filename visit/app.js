@@ -98,7 +98,7 @@
     locUnsure.hidden = locUnsure.disabled = mode === "visit";
     if (mode === "visit" && locSel.value === "Not sure yet") locSel.value = "";
     if (mode === "visit") renderDays();
-    document.title = mode === "visit" ? "Visit RootEd Foundation" : "Get Info · RootEd Foundation";
+    document.title = mode === "visit" ? "Schedule a Tour | RootEd Foundation, Alexandria VA" : "Get Info | RootEd Foundation, Alexandria VA";
     var p = new URLSearchParams(location.search);
     p.delete("info");
     var rest = p.toString();
@@ -134,7 +134,7 @@
     sel.appendChild(flex);
   })();
 
-  // Birthday: no future dates, back ~18 years (School House is 2 to 12, Microschool 13 and up).
+  // Birthday: no future dates, back ~18 years (School House is birth to 12, Microschool 13 and up).
   (function bdayLimits() {
     var b = form.elements.childBirthday;
     var max = new Date();
