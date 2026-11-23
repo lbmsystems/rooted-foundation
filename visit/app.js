@@ -67,7 +67,7 @@
       switchLead: "Not ready to visit?",
       toggle: "Get info first",
       introTitle: "Come see where<br />roots grow.",
-      introLede: "RootEd Foundation runs two schools in Alexandria: the RootEd School House on Colfax Ave for birth to 12, and the Root to Rise Microschool & Project Center on King St for ages 12 and up. The best way to know if one is right for your family is to visit. Tours take about 30 minutes.",
+      introLede: "RootEd Foundation runs two schools in Alexandria: the RootEd School House on Colfax Ave for ages 2 to 12, and the Root to Rise Microschool & Project Center on King St for ages 12 and up. The best way to know if one is right for your family is to visit. Tours take about 30 minutes.",
       locLegend: "Which location would you like to visit?"
     },
     info: {
@@ -134,7 +134,7 @@
     sel.appendChild(flex);
   })();
 
-  // Birthday: no future dates, back ~18 years (School House is birth to 12, Microschool 12 and up).
+  // Birthday: no future dates, back ~18 years (School House is 2 to 12, Microschool 12 and up).
   (function bdayLimits() {
     var b = form.elements.childBirthday;
     var max = new Date();
