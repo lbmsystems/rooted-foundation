@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css?v=4">
+<link rel="stylesheet" href="/site.css?v=6">
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -180,6 +180,7 @@
 
 <section class="reveal wrap" id="reveal" aria-labelledby="reveal-title">
   <div class="reveal-stage">
+    <p class="reveal-word" id="reveal-word" aria-hidden="true"><span>School</span> <span>House</span></p>
     <div id="tiles"></div>
     <div class="reveal-main ph-img" id="reveal-main">
       <img src="/assets/photos/sh-exterior.jpg" alt="RootEd School House from the driveway, 5700 Colfax Ave, Alexandria, VA" width="1600" height="996" loading="lazy" decoding="async">
@@ -412,37 +413,36 @@
   var main = document.getElementById('reveal-main');
   var card = document.getElementById('reveal-card');
   var tilesEl = document.getElementById('tiles');
-  // Start as a tidy photo grid with the house as one cell; on scroll the house
-  // opens up to fill the frame while the other photos drift away.
-  var desk = { cols:3, rows:3, gap:12, house:{ c:0, r:2, cs:3, rs:1 },
-    imgs:['painting','multiply','phonics','math','music','toddlers'] };
-  var phone = { cols:2, rows:3, gap:8, house:{ c:0, r:2, cs:2, rs:1 },
-    imgs:['painting','phonics','music','toddlers'] };
-  var set = null, tiles = [], cells = [], houseCell = null, houseImg = main.querySelector('img');
-  function cellRect(g, c, r, cs, rs, W, H){
-    var cw = (W - g.gap * (g.cols - 1)) / g.cols, ch = (H - g.gap * (g.rows - 1)) / g.rows;
-    return { x: c * (cw + g.gap), y: r * (ch + g.gap), w: cs * cw + (cs - 1) * g.gap, h: rs * ch + (rs - 1) * g.gap };
-  }
+  var word = document.getElementById('reveal-word');
+  var houseImg = main.querySelector('img');
+  // The house starts as a small card in the middle, with "School House" peeking out
+  // behind it and class photos floating around. Scrolling grows the house to fill the
+  // frame while the photos drift up and away at different speeds.
+  // Photo spots: left %, top %, width as a share of the stage width, height/width ratio, drift speed.
+  var desk = { card:{ w:0.36, h:0.5 }, photos:[
+    ['painting', 4, 7, 0.09, 0.78, 1.1], ['multiply', 21, 76, 0.075, 1.2, 0.7], ['phonics', 75, 5, 0.085, 1.15, 0.9],
+    ['math', 89, 32, 0.06, 0.8, 1.3], ['music', 82, 73, 0.08, 0.8, 0.8], ['toddlers', 45, 85, 0.06, 0.75, 1.2] ] };
+  var phone = { card:{ w:0.72, h:0.3 }, photos:[
+    ['painting', 3, 3, 0.22, 1.2, 1.1], ['phonics', 70, 6, 0.2, 0.8, 0.8], ['music', 76, 79, 0.2, 1.2, 1.2],
+    ['toddlers', 4, 80, 0.22, 0.78, 0.9], ['math', 41, 90, 0.15, 1.0, 1.3] ] };
+  var set = null, tiles = [], box = null;
   function buildTiles(){
     set = mq.matches ? phone : desk;
-    var W = main.offsetWidth, H = main.offsetHeight, ox = main.offsetLeft, oy = main.offsetTop;
-    var hc = set.house; houseCell = cellRect(set, hc.c, hc.r, hc.cs, hc.rs, W, H);
-    houseCell.W = W; houseCell.H = H;
-    var free = [];
-    for (var r = 0; r < set.rows; r++) for (var c = 0; c < set.cols; c++) {
-      if (c >= hc.c && c < hc.c + hc.cs && r >= hc.r && r < hc.r + hc.rs) continue;
-      free.push(cellRect(set, c, r, 1, 1, W, H));
-    }
-    var hx = houseCell.x + houseCell.w / 2, hy = houseCell.y + houseCell.h / 2;
-    tilesEl.innerHTML = ''; cells = [];
-    tiles = set.imgs.slice(0, free.length).map(function(name, i){
-      var f = free[i], el = document.createElement('div');
+    var stage = reveal.querySelector('.reveal-stage');
+    var SW = stage.clientWidth, SH = stage.clientHeight;
+    var W = main.offsetWidth, H = main.offsetHeight;
+    var cw = Math.round(W * set.card.w), ch = Math.round(H * set.card.h);
+    box = { W:W, H:H, x:(W - cw) / 2, y:(H - ch) / 2, w:cw, h:ch, SH:SH };
+    if (word) word.style.setProperty('--card-h', ch + 'px');
+    tilesEl.innerHTML = '';
+    tiles = set.photos.map(function(t){
+      var el = document.createElement('div');
+      var w = Math.round(SW * t[3]);
       el.className = 'tile'; el.setAttribute('aria-hidden', 'true');
-      el.style.left = (ox + f.x) + 'px'; el.style.top = (oy + f.y) + 'px';
-      el.style.width = f.w + 'px'; el.style.height = f.h + 'px';
-      el.innerHTML = '<img src="/assets/photos/' + name + '.jpg" alt="" loading="lazy">';
-      var dx = f.x + f.w / 2 - hx, dy = f.y + f.h / 2 - hy, d = Math.hypot(dx, dy) || 1;
-      cells.push({ ux: dx / d, uy: dy / d });
+      el.style.left = t[1] + '%'; el.style.top = t[2] + '%';
+      el.style.width = w + 'px'; el.style.height = Math.round(w * t[4]) + 'px';
+      el.innerHTML = '<img src="/assets/photos/' + t[0] + '.jpg" alt="" decoding="async">';
+      el._speed = t[5];
       tilesEl.appendChild(el); return el;
     });
   }
@@ -450,17 +450,18 @@
     var stageH = reveal.querySelector('.reveal-stage').offsetHeight;
     var r = reveal.getBoundingClientRect();
     var p = reduce ? 1 : Math.max(0, Math.min(1, -r.top / (r.height - stageH)));
-    var e = 1 - Math.pow(1 - Math.min(1, p / 0.75), 2);
-    var f = Math.max(0, Math.min(1, (p - 0.6) / 0.3));
-    var push = mq.matches ? 160 : 260;
-    tiles.forEach(function(el, i){
-      el.style.transform = 'translate(' + (cells[i].ux * push * e).toFixed(1) + 'px,' + (cells[i].uy * push * e).toFixed(1) + 'px)';
-      el.style.opacity = Math.max(0, 1 - e * 1.8).toFixed(3); el.style.pointerEvents = e > 0.3 ? 'none' : '';
+    var e = 1 - Math.pow(1 - Math.min(1, p / 0.7), 2);      // house grows
+    var fade = Math.max(0, Math.min(1, (p - 0.15) / 0.4));    // photos and word leave
+    var f = Math.max(0, Math.min(1, (p - 0.6) / 0.3));        // card text arrives
+    tiles.forEach(function(el){
+      el.style.transform = 'translateY(' + (-p * el._speed * box.SH * 0.6).toFixed(1) + 'px)';
+      el.style.opacity = (1 - fade).toFixed(3);
+      el.style.pointerEvents = fade > 0.3 ? 'none' : '';
     });
-    var h = houseCell, k = 1 - e;
-    // Keep the house itself centered in its grid cell, settling to its normal framing as it opens.
-    if (houseImg) { var focal = h.H * 0.55, shift = (h.y + h.h / 2 - focal) * k; houseImg.style.transform = 'translateY(' + shift.toFixed(1) + 'px)'; }
-    main.style.clipPath = 'inset(' + (h.y * k).toFixed(1) + 'px ' + ((h.W - h.x - h.w) * k).toFixed(1) + 'px ' + ((h.H - h.y - h.h) * k).toFixed(1) + 'px ' + (h.x * k).toFixed(1) + 'px)';
+    if (word) { word.style.opacity = (1 - fade).toFixed(3); word.style.transform = 'scale(' + (1 + e * 0.15).toFixed(3) + ')'; }
+    var b = box, k = 1 - e;
+    main.style.clipPath = 'inset(' + (b.y * k).toFixed(1) + 'px ' + ((b.W - b.x - b.w) * k).toFixed(1) + 'px ' + ((b.H - b.y - b.h) * k).toFixed(1) + 'px ' + (b.x * k).toFixed(1) + 'px)';
+    if (houseImg) houseImg.style.transform = 'scale(' + (1 + 0.12 * k).toFixed(3) + ')';
     card.style.opacity = f.toFixed(3);
     card.style.visibility = f > 0.05 ? 'visible' : 'hidden';
     card.style.transform = 'translateY(' + Math.round((1 - f) * 40) + 'px)';
