@@ -25,7 +25,8 @@
     var btn = it.querySelector('.nav-top');
     btn.addEventListener('click', function(e){
       e.stopPropagation();
-      var open = !it.classList.contains('open');
+      // With a mouse, hovering already opened it, so a click keeps it open instead of toggling it shut.
+      var open = matchMedia('(hover:hover)').matches ? true : !it.classList.contains('open');
       closeAll(it);
       it.classList.toggle('open', open);
       btn.setAttribute('aria-expanded', open ? 'true' : 'false');
