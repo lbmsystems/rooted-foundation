@@ -623,11 +623,11 @@ html{scroll-padding-top:var(--header-h)}
   var tilesEl = document.getElementById('tiles');
   // Start as a tidy photo grid with the house as one cell; on scroll the house
   // opens up to fill the frame while the other photos drift away.
-  var desk = { cols:4, rows:2, gap:12, house:{ c:0, r:0, cs:1, rs:2 },
+  var desk = { cols:3, rows:3, gap:12, house:{ c:0, r:2, cs:3, rs:1 },
     imgs:['painting','multiply','phonics','math','music','toddlers'] };
-  var phone = { cols:2, rows:3, gap:8, house:{ c:0, r:0, cs:2, rs:1 },
+  var phone = { cols:2, rows:3, gap:8, house:{ c:0, r:2, cs:2, rs:1 },
     imgs:['painting','phonics','music','toddlers'] };
-  var set = null, tiles = [], cells = [], houseCell = null;
+  var set = null, tiles = [], cells = [], houseCell = null, houseImg = main.querySelector('img');
   function cellRect(g, c, r, cs, rs, W, H){
     var cw = (W - g.gap * (g.cols - 1)) / g.cols, ch = (H - g.gap * (g.rows - 1)) / g.rows;
     return { x: c * (cw + g.gap), y: r * (ch + g.gap), w: cs * cw + (cs - 1) * g.gap, h: rs * ch + (rs - 1) * g.gap };
@@ -667,6 +667,8 @@ html{scroll-padding-top:var(--header-h)}
       el.style.opacity = Math.max(0, 1 - e * 1.8).toFixed(3); el.style.pointerEvents = e > 0.3 ? 'none' : '';
     });
     var h = houseCell, k = 1 - e;
+    // Keep the house itself centered in its grid cell, settling to its normal framing as it opens.
+    if (houseImg) { var focal = h.H * 0.55, shift = (h.y + h.h / 2 - focal) * k; houseImg.style.transform = 'translateY(' + shift.toFixed(1) + 'px)'; }
     main.style.clipPath = 'inset(' + (h.y * k).toFixed(1) + 'px ' + ((h.W - h.x - h.w) * k).toFixed(1) + 'px ' + ((h.H - h.y - h.h) * k).toFixed(1) + 'px ' + (h.x * k).toFixed(1) + 'px)';
     card.style.opacity = f.toFixed(3);
     card.style.visibility = f > 0.05 ? 'visible' : 'hidden';
