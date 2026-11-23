@@ -666,5 +666,55 @@ html{scroll-padding-top:var(--header-h)}
   window.addEventListener('scroll', stuck, {passive:true});
 })();
 </script>
+<script>
+/* Hand-drawn marks (circle, squiggle, underline, arrow) draw themselves in as they scroll into view. */
+(function(){
+  if(!('IntersectionObserver' in window)) return;
+  if(window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+  function len(path){
+    // Non-scaling strokes dash in screen pixels, so measure the path on screen.
+    if(getComputedStyle(path).vectorEffect!=='non-scaling-stroke') return path.getTotalLength();
+    var m=path.getScreenCTM(), L=path.getTotalLength(), n=48, d=0, prev=null;
+    for(var i=0;i<=n;i++){
+      var pt=path.getPointAtLength(L*i/n), x=m.a*pt.x+m.c*pt.y+m.e, y=m.b*pt.x+m.d*pt.y+m.f;
+      if(prev) d+=Math.hypot(x-prev[0],y-prev[1]);
+      prev=[x,y];
+    }
+    return d;
+  }
+  function hide(path){
+    var l=Math.ceil(len(path))+2;
+    path.style.transition='none';
+    path.style.strokeDasharray=l+' '+l;
+    path.style.strokeDashoffset=l;
+  }
+  function draw(path,delay,dur){
+    path.getBoundingClientRect();
+    path.style.transition='stroke-dashoffset '+dur+'ms cubic-bezier(.65,0,.35,1) '+delay+'ms';
+    path.style.strokeDashoffset='0';
+    path.addEventListener('transitionend',function done(){
+      path.removeEventListener('transitionend',done);
+      path.style.transition=path.style.strokeDasharray=path.style.strokeDashoffset='';
+    });
+  }
+  var groups=[];
+  var quote=document.querySelector('.t2-quote');
+  if(quote) groups.push({el:quote, paths:[].slice.call(quote.querySelectorAll('.t2-mark svg path')), durs:[900,700,600], gap:350});
+  document.querySelectorAll('.t2-arrow').forEach(function(a){
+    groups.push({el:a, paths:[].slice.call(a.querySelectorAll('path')), durs:[700,250], gap:0});
+  });
+  groups.forEach(function(g){ g.paths.forEach(hide); });
+  var io=new IntersectionObserver(function(entries){
+    entries.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var g=groups.filter(function(x){return x.el===e.target;})[0]; if(!g) return;
+      io.unobserve(e.target);
+      var t=250;
+      g.paths.forEach(function(p,i){ var d=g.durs[i]||600; hide(p); draw(p,t,d); t+=d+g.gap; });
+    });
+  },{threshold:0.5, rootMargin:'0px 0px -10% 0px'});
+  groups.forEach(function(g){ io.observe(g.el); });
+})();
+</script>
 </body>
 </html>
