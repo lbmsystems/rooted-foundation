@@ -125,7 +125,7 @@
         <a href="/community/"><strong>Community support</strong><span>Free store, counseling and more</span></a>
       </div>
     </div>
-    <a class="btn nav-cta" href="/visit">Schedule a visit</a>
+    <a class="btn nav-cta" href="/visit">Visit us</a>
     <button class="menu-toggle" type="button" aria-expanded="false" aria-controls="mobile-menu" aria-label="Menu"><svg aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#393939" stroke-width="2" stroke-linecap="round"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
   </nav>
   <div class="mobile-menu" id="mobile-menu" hidden>
@@ -390,13 +390,18 @@
 
   /* ---------- Header button appears once the hero's "Schedule a visit" scrolls away ---------- */
   var heroCta = document.getElementById('hero-cta');
-  if (heroCta && 'IntersectionObserver' in window) {
-    new IntersectionObserver(function(es){
-      es.forEach(function(e){
-        document.body.classList.toggle('cta-passed', !e.isIntersecting && e.boundingClientRect.top < 0);
-      });
-    }, { rootMargin: '-90px 0px 0px 0px' }).observe(heroCta);
-  } else { document.body.classList.add('cta-passed'); }
+  var hdr = document.querySelector('.site-header');
+  if (heroCta) {
+    var ctaTick = false;
+    var checkCta = function(){
+      ctaTick = false;
+      var passed = heroCta.getBoundingClientRect().bottom < (hdr ? hdr.getBoundingClientRect().bottom : 0);
+      document.body.classList.toggle('cta-passed', passed);
+    };
+    window.addEventListener('scroll', function(){ if (!ctaTick) { ctaTick = true; requestAnimationFrame(checkCta); } }, { passive:true });
+    window.addEventListener('resize', checkCta);
+    checkCta();
+  }
 
   /* ---------- Photo strip: slides sideways as the page scrolls ---------- */
   var strip = document.getElementById('strip');
