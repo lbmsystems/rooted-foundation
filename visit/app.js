@@ -426,6 +426,10 @@
       els.successTitle.textContent = "Thank you, " + name + "!";
       els.successBody.textContent = "We'll be in touch personally within one business day with more about RootEd Foundation. We can't wait to learn more about " + child + ".";
     }
+    // Analytics: count the request as a lead. No names or contact details are sent.
+    if (!DEMO && typeof window.gtag === "function") {
+      window.gtag("event", "generate_lead", { form_type: mode, program_location: locSel.value || "unspecified" });
+    }
     form.hidden = true;
     els.success.hidden = false;
     els.success.focus();
