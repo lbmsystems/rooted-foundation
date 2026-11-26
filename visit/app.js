@@ -119,6 +119,9 @@
     var sel = form.elements.startMonth;
     var d = new Date();
     d.setDate(1);
+    // Programs open January 2027, so the earliest start month offered is January 2027.
+    var earliest = new Date(2027, 0, 1);
+    if (d < earliest) d = earliest;
     var n = cfg.MONTHS_AHEAD || 12;
     for (var i = 0; i < n; i++) {
       var y = d.getFullYear(), m = d.getMonth();
