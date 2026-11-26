@@ -13,15 +13,8 @@ Airtable token. Nothing secret lives in this repo.
 
 ## Password (draft mode)
 
-The whole site sits behind a password prompt (`functions/_middleware.js`) while it's a draft.
-The password is the `SITE_PASSWORD` secret in Cloudflare → Workers & Pages → rooted-foundation → Settings →
-Variables and Secrets. Any username works. If the secret is missing, the site shows nothing.
-Changing the password takes effect on the next deploy (merge anything, or Retry the latest deployment).
-To launch publicly, delete `functions/_middleware.js`.
-
-Note: while this is on, families can't reach `/register` either. Turn it off (or exempt `/register`) before
-sending real registration links.
-
+The site is public (launched Nov 2026). To lock it again, restore `functions/_middleware.js`
+from git history; it reads the `SITE_PASSWORD` secret in Cloudflare → Workers & Pages → rooted-foundation.
 
 ## Photos and videos
 
