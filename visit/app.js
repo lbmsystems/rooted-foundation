@@ -55,7 +55,11 @@
   // ?location=schoolhouse or ?location=microschool preselects (handy for links from each school's domain).
   (function preselect() {
     var want = (params.get("location") || "").toLowerCase();
-    Object.keys(LOCS).forEach(function (k) { if (LOCS[k].short === want) locSel.value = k; });
+    Object.keys(LOCS).forEach(function (k) {
+      if (LOCS[k].short !== want) return;
+      var o = Array.prototype.find.call(locSel.options, function (x) { return x.value === k; });
+      if (o && !o.disabled) locSel.value = k; // skip locations marked "Coming soon"
+    });
   })();
 
   // ---------- Copy per mode ----------
