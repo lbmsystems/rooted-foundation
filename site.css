@@ -332,7 +332,7 @@ html.menu-open{overflow:hidden}
 .crumbs a{color:var(--muted)}
 .crumbs span{margin:0 6px}
 .page-hero{padding:48px 64px 72px}
-.page-hero h1{font-family:var(--display);font-size:clamp(34px,5vw,64px);line-height:1.08;font-weight:600;letter-spacing:-.02em;max-width:900px}
+.page-hero h1{font-family:var(--display);font-size:clamp(34px,5vw,64px);line-height:1.08;font-weight:500;letter-spacing:-.02em;max-width:900px}
 .page-hero .lead{font-size:22px;line-height:1.5;max-width:720px;margin-top:24px;color:var(--ink-2)}
 .chips{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px;padding:0;list-style:none}
 .chips li{background:var(--paper);border-radius:999px;padding:8px 16px;font-size:14px}
