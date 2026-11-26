@@ -471,3 +471,6 @@ label.check .optional { margin-left: 4px; }
   .reg .intro .lede { font-size: 15px; }
 }
 
+.collage-band{max-width:1100px;margin:64px auto 0;padding:0 24px}
+.collage-band img{display:block;width:100%;height:auto;border-radius:24px}
+@media (max-width:820px){.collage-band{margin-top:40px;padding:0 12px}.collage-band img{border-radius:16px}}
