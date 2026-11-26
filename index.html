@@ -22,7 +22,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Poppins:wght@400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/site.css?v=17">
+<link rel="stylesheet" href="/site.css?v=18">
 <script type="application/ld+json">
 {
  "@context": "https://schema.org",
@@ -301,7 +301,7 @@
   var data = [
     { label:'engineering challenge', blurb:'Engineering with spaghetti: will it hold the weight?', color:'#B9512F', video:'/assets/videos/engineering.mp4', poster:'/assets/videos/engineering.jpg' },
     { label:'multiplication game', blurb:'Learning multiplication by playing, not memorizing', color:'#4F6B3A', video:'/assets/videos/multiplication.mp4', poster:'/assets/videos/multiplication.jpg' },
-    { label:'community free store', blurb:'Our Community Free Store, featured on NBC4', color:'#7A5A2E', video:'/assets/videos/free-store.mp4', poster:'/assets/videos/free-store.jpg' }
+    { label:'community free store', blurb:'Our Community Free Store, featured on ', link:{text:'NBC4', href:'/community/#nbc4'}, color:'#7A5A2E', video:'/assets/videos/free-store.mp4', poster:'/assets/videos/free-store.jpg' }
     // To add a slide: drop the .mp4 and a poster .jpg in assets/videos/ and add a line here.
   ];
   var hero = document.getElementById('top');
@@ -322,6 +322,7 @@
     clipsEl.appendChild(c); clips.push(c);
     var b = document.createElement('p');
     b.className = 'bubble'; b.textContent = d.blurb;
+    if (d.link) { var a = document.createElement('a'); a.href = d.link.href; a.textContent = d.link.text; a.className = 'bubble-link'; b.appendChild(a); }
     bubblesEl.appendChild(b); bubbles.push(b);
     var t = document.createElement('button');
     t.type = 'button'; t.setAttribute('aria-label', 'Show ' + d.label);
