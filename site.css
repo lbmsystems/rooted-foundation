@@ -168,6 +168,9 @@ html{scroll-padding-top:var(--header-h)}
 .visit-top{display:flex;flex-wrap:wrap;justify-content:space-between;align-items:flex-end;gap:32px;margin-bottom:0}
 .visit h2{font-family:var(--display);font-size:clamp(30px,4.2vw,56px);line-height:1.18;font-weight:500;letter-spacing:-.01em;max-width:760px}
 .visit .btn-light{display:inline-block;background:var(--paper);color:var(--ink);text-decoration:none;padding:20px 36px;border-radius:999px;font-weight:500;font-size:18px}
+.visit-contact{display:flex;flex-wrap:wrap;gap:16px 32px;margin-top:40px;padding-top:28px;border-top:1px solid rgba(255,255,255,.18)}
+.visit-contact a{display:inline-flex;align-items:center;gap:10px;color:var(--paper);text-decoration:none;font-size:18px}
+.visit-contact a:hover{text-decoration:underline}
 .visit .note{padding-top:28px;border-top:1px solid var(--muted);color:var(--line-2)}
 
 /* Footer */
